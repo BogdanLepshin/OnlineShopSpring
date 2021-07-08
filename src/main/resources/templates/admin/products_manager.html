@@ -12,9 +12,9 @@
 </header>
 <div class="container-fluid">
     <h2>Manage Products</h2>
-    <a href="/products_manager/new-product">Create new product</a>
+    <a href="/products-manager/new-product">Create new product</a>
     <div class="form-floating">
-        <form th:action="@{/products_manager}" th:object="${category}" method="post">
+        <form th:action="@{/products-manager}" th:object="${category}" method="post">
             <select th:field="*{id}" class="form-select w-25 mt-5" id="category">
                 <option th:value="0" selected>All categories</option>
                 <option th:each="category : ${categories}"
@@ -49,7 +49,7 @@
             <td th:text="${product.category.getName()}">Category</td>
             <td th:text="${product.enabled}">Enabled</td>
             <td>
-                <a th:href="@{products_manager/edit/{id}(id=${product.id})}">Edit</a>
+                <a th:href="@{products-manager/edit/{id}(id=${product.id})}">Edit</a>
                 <a href="#">Remove</a>
             </td>
         </tr>

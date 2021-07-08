@@ -34,13 +34,13 @@ public class AdminController {
         model.addAttribute("categories", categoryRepository.findAll());
     }
 
-    @GetMapping("/products_manager/new-product")
+    @GetMapping("/products-manager/new-product")
     public String createNewProductView(Model model) {
         model.addAttribute("product", new ProductDTO());
         return "admin/new_product";
     }
 
-    @GetMapping("/products_manager")
+    @GetMapping("/products-manager")
     public String productsManagerView(Model model) {
         //TODO pagination
         model.addAttribute("products", productService.getAllProducts());
@@ -48,38 +48,38 @@ public class AdminController {
         return "admin/products_manager";
     }
 
-    @PostMapping("/products_manager")
+    @PostMapping("/products-manager")
     public String productsByCategory(@ModelAttribute Category category, Model model) {
         if (category.getId() == 0) {
             model.addAttribute("products", productService.getAllProducts());
             return "admin/products_manager";
         }
         model.addAttribute("products", productService.findProductsByCategory(category.getId()));
-        return "admin/products_manager";
+        return "admin/products-manager";
     }
 
-    @GetMapping("/products_manager/edit/{id}")
+    @GetMapping("/products-manager/edit/{id}")
     public String editView(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.getProductById(id));
         return "admin/edit_product";
     }
 
-    @PostMapping("/products_manager/edit/save")
+    @PostMapping("/products-manager/edit/save")
     public String editSave(@ModelAttribute Product product, Model model) {
         productService.updateProduct(new ProductDTO().toProductDto(product));
         return "admin/edit_product";
     }
 
-    @PostMapping("/products_manager/new-product/save")
+    @PostMapping("/products-manager/new-product/save")
     public String addNewProduct(@ModelAttribute ProductDTO productDTO,
                                 @RequestParam("product_pic") MultipartFile file, Model model) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         productDTO.setImage(fileName);
         Product savedProduct = saveNewProduct(productDTO, model);
         if (savedProduct == null)
-            return "redirect:/products_manager/new-product";
+            return "redirect:/products-manager/new-product";
         uploadImage(file, fileName, savedProduct);
-        return "redirect:/products_manager";
+        return "redirect:/products-manager";
     }
 
     private Product saveNewProduct(ProductDTO productDTO, Model model) {
@@ -95,7 +95,7 @@ public class AdminController {
     }
 
     private void uploadImage(MultipartFile file, String fileName, Product savedProduct) {
-        String uploadDir = "product_images/" + savedProduct.getId();
+        String uploadDir = "product-images/" + savedProduct.getId();
         try {
             FileUploadUtil.saveFile(uploadDir, fileName, file);
         } catch (IOException e) {
